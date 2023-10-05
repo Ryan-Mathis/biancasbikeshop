@@ -66,22 +66,34 @@ public class WorkOrderController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("complete/{id}")]
     [Authorize]
-    public IActionResult CompleteWorkOrder(WorkOrder workOrder, int id)
+    public IActionResult CompleteWorkOrder(int id)
     {
         WorkOrder workOrderToComplete = _dbContext.WorkOrders.SingleOrDefault(wo => wo.Id == id);
         if (workOrderToComplete == null)
         {
             return NotFound();
         }
-        else if (id != workOrder.Id)
-        {
-            return BadRequest();
-        }
 
         DateTime now = DateTime.Now;
         workOrderToComplete.DateCompleted = now;
+        _dbContext.SaveChanges();
+
+        return NoContent();
+    }
+
+    [HttpDelete("delete/{id}")]
+    [Authorize]
+    public IActionResult DeleteWorkOrder(int id)
+    {
+        WorkOrder workOrderToDelete = _dbContext.WorkOrders.SingleOrDefault(wo => wo.Id == id);
+        if (workOrderToDelete == null)
+        {
+            return NotFound();
+        }
+
+        _dbContext.Remove(workOrderToDelete);
         _dbContext.SaveChanges();
 
         return NoContent();

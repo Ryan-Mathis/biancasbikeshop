@@ -23,3 +23,21 @@ export const updateWorkOrder = (workOrder) => {
         body: JSON.stringify(workOrder),
     });
 };
+
+export const completeWorkOrderById = (id) => {
+    return fetch(`${_apiUrl}/complete/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+};
+
+export const deleteWorkOrderById = (id) => {
+    return fetch(`${_apiUrl}/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+};
